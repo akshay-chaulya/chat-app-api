@@ -6,8 +6,9 @@ import bcrypt from "bcrypt"
 
 export const getMe = (req: Request, res: Response) => {
     try {
-        return responseHandler(res, { user: req.user });
+        return responseHandler(res, { data: { user: req.user } });
     } catch (error) {
+        console.log("Error in getMe controller: ", error);
         errorHandler(res, error);
     }
 }
@@ -49,10 +50,10 @@ export const signup = async (req: Request, res: Response) => {
 
         generateToken(res, newUser.id);
 
-        return responseHandler(res, { statusCode: ResponsStatus.Created, message: "Account created successfully", user: filteredUser(newUser) })
+        return responseHandler(res, { statusCode: ResponsStatus.Created, message: "Account created successfully", data: { user: filteredUser(newUser) } })
 
     } catch (error) {
-        console.log(error)
+        console.log("Error in signup controller: ", error);
         errorHandler(res, error);
     }
 }
@@ -78,8 +79,9 @@ export const login = async (req: Request, res: Response) => {
 
         generateToken(res, user.id);
 
-        return responseHandler(res, { statusCode: ResponsStatus.Accepted, message: "Logged in successfully", user: filteredUser(user) })
+        return responseHandler(res, { statusCode: ResponsStatus.Accepted, message: "Logged in successfully", data: { user: filteredUser(user) } })
     } catch (error) {
+        console.log("Error in login controller: ", error);
         errorHandler(res, error)
     }
 }
@@ -89,6 +91,7 @@ export const logout = (req: Request, res: Response) => {
         res.cookie("jwt", "", { maxAge: 0 });
         return responseHandler(res, { message: "Logged out successfully" });
     } catch (error) {
+        console.log("Error in logout controller: ", error);
         errorHandler(res, error);
     }
 }

@@ -22,8 +22,8 @@ model User {
   profilePic       String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-  conversationsIds String[]
 
+  conversationsIds String[]
   conversations Conversation[]
   messages      Message[]
 }
@@ -33,7 +33,7 @@ model Conversation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  partTicipantIds String[]
+  participantIds String[]
   participants    User[]
 
   messageIds String[]
@@ -50,7 +50,7 @@ model Message {
   sender   User   @relation(fields: [senderId], references: [id])
 
   body      String
-  createdAp DateTime @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 

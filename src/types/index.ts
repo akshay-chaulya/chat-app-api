@@ -29,9 +29,13 @@ export interface CustomError {
 export interface CustomRespons {
     statusCode?: number;
     message?: string;
-    data?: any;
-    token?: string;
-    user?: any;
+    data?: {
+        token?: string;
+        user?: any; 
+        newMessage?: any;
+        allMessages?: any;
+        users?: any;
+    };
 }
 
 export interface User {
