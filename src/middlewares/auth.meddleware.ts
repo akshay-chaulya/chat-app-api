@@ -19,13 +19,13 @@ const protectRoute = async (req: Request, res: Response, next: NextFunction) => 
             return throwError({ message: "Unauthorized - Invalid Token", statusCode: ResponsStatus.Unauthorized });
         }
 
-        const user = await prisma.user.findUnique({ where: { id: decoded.userId }, select: { id: true, username: true, fullName: true, profilePic: true } });
+        const user = await prisma.user.findUnique({ where: { id: decoded.userId }, select: { id: true, email: true, fullName: true, profilePic: true } });
 
         if (!user) {
             return throwError({ message: "User not found", statusCode: ResponsStatus.NotFound });
         }
 
-        req.user = user;
+        req.user = { ...user, profilePic: user.profilePic || undefined };
 
         next();
     } catch (error) {

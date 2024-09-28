@@ -29,20 +29,14 @@ export interface CustomError {
 export interface CustomRespons {
     statusCode?: number;
     message?: string;
-    data?: {
-        token?: string;
-        user?: any; 
-        newMessage?: any;
-        allMessages?: any;
-        users?: any;
-    };
+    data?: any;
 }
 
 export interface User {
     id: string;
-    username: string;
+    email: string;
     fullName: string;
-    profilePic: string;
+    profilePic?: string;
 }
 
 export interface DecodedToken extends JwtPayload {

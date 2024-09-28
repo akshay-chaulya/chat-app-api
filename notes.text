@@ -1,0 +1,2 @@
+# Prisma command for initialise the data
+npx prisma migrate dev --name init or schema name

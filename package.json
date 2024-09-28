@@ -7,7 +7,7 @@
     "bulid": "tsc",
     "watch": "tsc -w",
     "start": "nodemon ./dist/server.js",
-    "dev": "nodemon --watch ./src --exec ts-node ./src/server.ts"
+    "db": "prisma migrate dev --name init or schema name"
   },
   "keywords": [],
   "author": "",
@@ -16,15 +16,19 @@
     "@prisma/client": "^5.19.1",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^5.19.1"
+    "prisma": "^5.19.1",
+    "socket.io": "^4.8.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.7"
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/lodash": "^4.17.9"
   }
 }

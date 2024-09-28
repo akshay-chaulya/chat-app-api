@@ -6,7 +6,7 @@ import bcrypt from "bcrypt"
 
 export const getMe = (req: Request, res: Response) => {
     try {
-        return responseHandler(res, { data: { user: req.user } });
+        return responseHandler(res, { data: req.user });
     } catch (error) {
         console.log("Error in getMe controller: ", error);
         errorHandler(res, error);
@@ -15,9 +15,9 @@ export const getMe = (req: Request, res: Response) => {
 
 export const signup = async (req: Request, res: Response) => {
     try {
-        const { fullName, username, password, confirmPassword, gender } = req.body;
+        const { fullName, email, password, confirmPassword, gender, profilePic } = req.body;
 
-        if (!fullName || !username || !password || !confirmPassword || !gender) {
+        if (!fullName || !email || !password || !confirmPassword || !gender) {
             return throwError({ message: "Empty cradentials", statusCode: ResponsStatus.NotFound })
         }
 
@@ -25,32 +25,31 @@ export const signup = async (req: Request, res: Response) => {
             return throwError({ message: "Password doesn't match!", statusCode: ResponsStatus.BadRequest });
         }
 
-        const user = await prisma.user.findUnique({ where: { username } });
+        const user = await prisma.user.findUnique({ where: { email } });
 
         if (user) {
-            return throwError({ message: "Username already exists", statusCode: ResponsStatus.BadRequest });
+            return throwError({ message: "email already exists", statusCode: ResponsStatus.BadRequest });
         }
 
         const hashedPassword = bcrypt.hashSync(password, 10);
 
-        const maleProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-        const femaleProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
-
-        let profilePic = gender === 'male' ? maleProfilePic : femaleProfilePic;
+        // const maleProfilePic = `https://avatar.iran.liara.run/public/boy?email=${email}`;
+        // const femaleProfilePic = `https://avatar.iran.liara.run/public/girl?email=${email}`;
 
         const newUser = await prisma.user.create({
             data: {
                 fullName,
-                username,
+                email,
                 password: hashedPassword,
                 gender,
-                profilePic
-            }
+                profilePic: profilePic || "",
+            },
+            select: { id: true, fullName: true, email: true, profilePic: true },
         })
 
         generateToken(res, newUser.id);
 
-        return responseHandler(res, { statusCode: ResponsStatus.Created, message: "Account created successfully", data: { user: filteredUser(newUser) } })
+        return responseHandler(res, { statusCode: ResponsStatus.Created, message: "Account created successfully", data: newUser })
 
     } catch (error) {
         console.log("Error in signup controller: ", error);
@@ -60,12 +59,12 @@ export const signup = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     try {
-        const { username, password } = req.body;
-        if (!username || !password) {
+        const { email, password } = req.body;
+        if (!email || !password) {
             return throwError({ message: "Empty cradentials", statusCode: ResponsStatus.NotFound })
         }
 
-        const user = await prisma.user.findUnique({ where: { username } });
+        const user = await prisma.user.findUnique({ where: { email } });
 
         if (!user) {
             return throwError({ message: "User doesn't exists", statusCode: ResponsStatus.BadRequest })
@@ -79,7 +78,7 @@ export const login = async (req: Request, res: Response) => {
 
         generateToken(res, user.id);
 
-        return responseHandler(res, { statusCode: ResponsStatus.Accepted, message: "Logged in successfully", data: { user: filteredUser(user) } })
+        return responseHandler(res, { statusCode: ResponsStatus.Accepted, message: "Logged in successfully", data: filteredUser(user) })
     } catch (error) {
         console.log("Error in login controller: ", error);
         errorHandler(res, error)
