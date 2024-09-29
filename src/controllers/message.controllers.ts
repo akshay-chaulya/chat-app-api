@@ -62,7 +62,6 @@ export const sendMessage = async (req: Request, res: Response) => {
 
         // Socket io will go here
         const receiverSocketId = getReceiverSocketId(receiverId);
-        console.log("this is receiver id: ", receiverSocketId)
 
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", newMessage);

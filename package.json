@@ -6,7 +6,7 @@
   "scripts": {
     "bulid": "tsc",
     "watch": "tsc -w",
-    "start": "nodemon ./dist/server.js",
+    "start": "node ./dist/server.js",
     "db": "prisma migrate dev --name init or schema name"
   },
   "keywords": [],
