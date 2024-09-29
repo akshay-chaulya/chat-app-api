@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 import { app, server } from "./socket"
 
+
 // CORS setup
 app.use(cors({
     origin: origins, // frontend origin
