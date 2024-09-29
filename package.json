@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-   "build": "tsc",
-    "migrate": "prisma migrate deploy",
+    "build": "tsc && prisma generate",
     "generate": "prisma generate",
     "start": "node dist/server.js"
   },
