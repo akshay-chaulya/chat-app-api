@@ -1,5 +1,5 @@
 import express from "express"
-import { port } from "./config"
+import { origins, port } from "./config"
 import mainRoutes from "./routes"
 import { errorHandler } from "./utils";
 import { ResponsStatus } from "./types";
@@ -9,7 +9,7 @@ import { app, server } from "./socket"
 
 // CORS setup
 app.use(cors({
-    origin: ["http://localhost:5173"], // frontend origin
+    origin: origins, // frontend origin
     credentials: true,
 }));
 app.use(cookieParser()); // for parsing cookies
